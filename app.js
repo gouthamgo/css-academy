@@ -274,9 +274,13 @@
     let codeTabs;
     let runBtn;
     let copyBtn;
+    let resetBtn;
     let notification;
     let themeToggle;
     let themeIcon;
+
+    // Auto-save debounce timer
+    let autoSaveTimer = null;
 
     // Utility function to sanitize HTML to prevent XSS
     function sanitizeHTML(html) {
@@ -310,8 +314,16 @@
         // Update the UI
         conceptTitle.textContent = data.title;
         conceptDescription.textContent = data.description;
-        htmlEditor.textContent = data.html;
-        cssEditor.textContent = data.css;
+
+        // Check for saved code
+        const savedCode = getSavedCode(conceptName);
+        if (savedCode) {
+            htmlEditor.textContent = savedCode.html;
+            cssEditor.textContent = savedCode.css;
+        } else {
+            htmlEditor.textContent = data.html;
+            cssEditor.textContent = data.css;
+        }
 
         // Run the code
         runCode();
@@ -443,6 +455,58 @@
         setTheme(newTheme);
     }
 
+    // Code Save/Load Management
+    function getSavedCode(conceptName) {
+        const saved = localStorage.getItem(`css-academy-code-${conceptName}`);
+        return saved ? JSON.parse(saved) : null;
+    }
+
+    function saveCode(conceptName, html, css) {
+        const codeData = { html, css, timestamp: Date.now() };
+        localStorage.setItem(`css-academy-code-${conceptName}`, JSON.stringify(codeData));
+    }
+
+    function clearSavedCode(conceptName) {
+        localStorage.removeItem(`css-academy-code-${conceptName}`);
+    }
+
+    function autoSave() {
+        const activeConcept = document.querySelector('.concept-item.active');
+        if (activeConcept) {
+            const conceptName = activeConcept.getAttribute('data-concept');
+            const html = htmlEditor.textContent || htmlEditor.innerText;
+            const css = cssEditor.textContent || cssEditor.innerText;
+            saveCode(conceptName, html, css);
+        }
+    }
+
+    function debouncedAutoSave() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(autoSave, 1000); // Save 1 second after user stops typing
+    }
+
+    function resetCode() {
+        const activeConcept = document.querySelector('.concept-item.active');
+        if (activeConcept) {
+            const conceptName = activeConcept.getAttribute('data-concept');
+            const data = conceptData[conceptName];
+
+            if (data) {
+                // Clear saved code
+                clearSavedCode(conceptName);
+
+                // Restore default code
+                htmlEditor.textContent = data.html;
+                cssEditor.textContent = data.css;
+
+                // Run the code
+                runCode();
+
+                showNotification('Code reset to default', 'success');
+            }
+        }
+    }
+
     // Initialize the application
     function init() {
         // Cache DOM elements
@@ -455,6 +519,7 @@
         codeTabs = document.querySelectorAll('.code-tab');
         runBtn = document.getElementById('run-btn');
         copyBtn = document.getElementById('copy-btn');
+        resetBtn = document.getElementById('reset-btn');
         notification = document.getElementById('notification');
         themeToggle = document.getElementById('theme-toggle');
         themeIcon = document.getElementById('theme-icon');
@@ -462,6 +527,10 @@
         // Initialize theme
         const savedTheme = getTheme();
         setTheme(savedTheme);
+
+        // Add auto-save on input
+        htmlEditor.addEventListener('input', debouncedAutoSave);
+        cssEditor.addEventListener('input', debouncedAutoSave);
 
         // Add click event to concept items
         conceptItems.forEach(item => {
@@ -495,6 +564,11 @@
 
         // Copy code button
         copyBtn.addEventListener('click', copyCode);
+
+        // Reset code button
+        if (resetBtn) {
+            resetBtn.addEventListener('click', resetCode);
+        }
 
         // Theme toggle button
         if (themeToggle) {
