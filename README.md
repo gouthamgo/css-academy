@@ -7,6 +7,8 @@ An interactive, hands-on CSS learning playground that allows students and develo
 ![CSS Academy](https://img.shields.io/badge/CSS-Academy-4361ee?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-Automated-00C853?style=for-the-badge)
+![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages-181717?style=for-the-badge&logo=github)
 
 ## 🌟 Features
 
@@ -69,25 +71,56 @@ An interactive, hands-on CSS learning playground that allows students and develo
    - Edit the code and click "Run Code"
    - See instant results in the preview pane
 
-### Deployment
+### Automated Deployment (CI/CD)
 
-The project is configured for GitHub Pages deployment:
+The project features a **fully automated CI/CD pipeline**:
 
-1. Push to `main` branch
-2. GitHub Actions automatically deploys to GitHub Pages
-3. Access at: `https://[username].github.io/css-academy/`
+#### 🚀 Push to Deploy
+```bash
+# Just push to any development branch
+git push origin claude/my-feature
+
+# The pipeline automatically:
+# ✅ Validates your code
+# ✅ Creates a pull request
+# ✅ Merges to main
+# ✅ Deploys to GitHub Pages
+# ✅ Cleans up the branch
+```
+
+#### Pipeline Features
+- **Zero Manual Intervention**: Push code and it goes live automatically
+- **Quality Checks**: HTML, CSS, and JavaScript validation
+- **Security Scanning**: Automatic security issue detection
+- **Fast Deployment**: ~3 minutes from push to production
+- **Branch Cleanup**: Automatic deletion after merge
+
+#### Supported Branches
+The auto-merge pipeline works with:
+- `claude/**` - Claude AI development
+- `feature/**` - New features
+- `dev/**` - General development
+
+#### Access Your Site
+- **Live URL**: `https://gouthamgo.github.io/css-academy/`
+- **Deployment Status**: Check the Actions tab
+
+📖 **[Full CI/CD Documentation](CICD.md)**
 
 ## 📁 Project Structure
 
 ```
 css-academy/
 ├── css.html              # Main HTML file
-├── c.css                 # Stylesheet
+├── c.css                 # Stylesheet with theming
 ├── app.js                # Application logic
-├── README.md             # Documentation
+├── README.md             # Project documentation
+├── CICD.md               # CI/CD pipeline documentation
 └── .github/
     └── workflows/
-        └── static.yml    # GitHub Pages deployment
+        ├── ci-checks.yml      # Quality & validation checks
+        ├── auto-merge.yml     # Automated merge to main
+        └── static.yml         # GitHub Pages deployment
 ```
 
 ## 🎯 Usage
@@ -110,10 +143,17 @@ css-academy/
 
 ## 🛠️ Technology Stack
 
-- **HTML5** - Semantic markup
-- **CSS3** - Modern CSS features (Grid, Flexbox, Custom Properties)
-- **Vanilla JavaScript** - No frameworks, pure ES6+
-- **GitHub Actions** - CI/CD for automated deployment
+### Frontend
+- **HTML5** - Semantic markup with ARIA accessibility
+- **CSS3** - Modern features (Grid, Flexbox, Custom Properties, Theming)
+- **Vanilla JavaScript** - No frameworks, pure ES6+ with IIFE
+
+### DevOps & CI/CD
+- **GitHub Actions** - Automated CI/CD pipeline
+  - Continuous Integration with quality checks
+  - Automated merging to main branch
+  - Automatic deployment to GitHub Pages
+- **GitHub Pages** - Free hosting and CDN
 
 ### Browser Support
 

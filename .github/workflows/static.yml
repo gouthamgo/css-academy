@@ -1,5 +1,5 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# Automated deployment workflow for GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -8,6 +8,12 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+  # Trigger after auto-merge completes
+  workflow_run:
+    workflows: ["Auto Merge to Main"]
+    types:
+      - completed
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -31,13 +37,44 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate deployment files
+        run: |
+          echo "Validating files for deployment..."
+          if [ ! -f "css.html" ]; then
+            echo "Error: css.html not found!"
+            exit 1
+          fi
+          if [ ! -f "c.css" ]; then
+            echo "Error: c.css not found!"
+            exit 1
+          fi
+          if [ ! -f "app.js" ]; then
+            echo "Error: app.js not found!"
+            exit 1
+          fi
+          echo "✓ All required files present"
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deployment success notification
+        if: success()
+        run: |
+          echo "::notice::🚀 CSS Academy successfully deployed to GitHub Pages!"
+          echo "::notice::📍 URL: ${{ steps.deployment.outputs.page_url }}"
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo "::error::❌ Deployment to GitHub Pages failed!"

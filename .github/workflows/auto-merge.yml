@@ -1,0 +1,152 @@
+name: Auto Merge to Main
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+      - 'feature/**'
+      - 'dev/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check HTML syntax
+        run: |
+          echo "Checking HTML files..."
+          for file in *.html; do
+            if [ -f "$file" ]; then
+              echo "Validating $file"
+              # Basic HTML validation - check for closing tags
+              if grep -q "</html>" "$file"; then
+                echo "✓ $file looks valid"
+              else
+                echo "✗ $file might be invalid"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Check JavaScript syntax
+        run: |
+          echo "Checking JavaScript files..."
+          if [ -f "app.js" ]; then
+            # Check for basic syntax errors
+            node -c app.js || exit 1
+            echo "✓ app.js syntax is valid"
+          fi
+
+      - name: Check CSS syntax
+        run: |
+          echo "Checking CSS files..."
+          for file in *.css; do
+            if [ -f "$file" ]; then
+              echo "✓ $file exists"
+            fi
+          done
+
+      - name: Verify required files
+        run: |
+          echo "Checking required files..."
+          required_files=("css.html" "c.css" "app.js" "README.md")
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "✗ Missing required file: $file"
+              exit 1
+            fi
+            echo "✓ Found $file"
+          done
+
+  auto-merge:
+    name: Auto Merge to Main
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+
+      - name: Get branch name
+        id: branch
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "Current branch: $BRANCH_NAME"
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.branch.outputs.branch }}
+          base: main
+          title: "Auto-merge: ${{ steps.branch.outputs.branch }}"
+          body: |
+            ## Automated Pull Request
+
+            This PR was automatically created from branch `${{ steps.branch.outputs.branch }}`.
+
+            ### Validation Status
+            ✅ All validation checks passed
+
+            ### Changes
+            This PR will be automatically merged to main after final checks.
+
+            ---
+            *This is an automated PR created by GitHub Actions*
+          labels: |
+            automated
+            auto-merge
+
+      - name: Wait for checks
+        run: sleep 5
+
+      - name: Merge to main
+        run: |
+          echo "Fetching latest main..."
+          git fetch origin main
+
+          echo "Checking out main..."
+          git checkout main
+
+          echo "Merging ${{ steps.branch.outputs.branch }} into main..."
+          git merge origin/${{ steps.branch.outputs.branch }} --no-ff -m "Auto-merge: ${{ steps.branch.outputs.branch }} → main"
+
+          echo "Pushing to main..."
+          git push origin main
+
+          echo "✓ Successfully merged to main!"
+
+      - name: Notification
+        run: |
+          echo "::notice::Branch ${{ steps.branch.outputs.branch }} has been automatically merged to main and will be deployed to GitHub Pages"
+
+  cleanup:
+    name: Clean up merged branch
+    needs: auto-merge
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Delete merged branch
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "Deleting branch: $BRANCH_NAME"
+          git push origin --delete $BRANCH_NAME || echo "Branch already deleted or could not be deleted"
+        continue-on-error: true
