@@ -275,6 +275,8 @@
     let runBtn;
     let copyBtn;
     let notification;
+    let themeToggle;
+    let themeIcon;
 
     // Utility function to sanitize HTML to prevent XSS
     function sanitizeHTML(html) {
@@ -414,6 +416,33 @@
         }
     }
 
+    // Theme Management
+    function getTheme() {
+        return localStorage.getItem('css-academy-theme') || 'light';
+    }
+
+    function setTheme(theme) {
+        localStorage.setItem('css-academy-theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+
+        // Update icon
+        if (themeIcon) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Update aria-label
+        if (themeToggle) {
+            themeToggle.setAttribute('aria-label',
+                theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+    }
+
+    function toggleTheme() {
+        const currentTheme = getTheme();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    }
+
     // Initialize the application
     function init() {
         // Cache DOM elements
@@ -427,6 +456,12 @@
         runBtn = document.getElementById('run-btn');
         copyBtn = document.getElementById('copy-btn');
         notification = document.getElementById('notification');
+        themeToggle = document.getElementById('theme-toggle');
+        themeIcon = document.getElementById('theme-icon');
+
+        // Initialize theme
+        const savedTheme = getTheme();
+        setTheme(savedTheme);
 
         // Add click event to concept items
         conceptItems.forEach(item => {
@@ -460,6 +495,11 @@
 
         // Copy code button
         copyBtn.addEventListener('click', copyCode);
+
+        // Theme toggle button
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
