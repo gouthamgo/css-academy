@@ -16,6 +16,23 @@
             box-sizing: border-box;
         }
 
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 0 0 4px 0;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -173,8 +190,22 @@
         .code-tab {
             padding: 0.5rem 1rem;
             cursor: pointer;
+            border: none;
             border-bottom: 2px solid transparent;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--dark);
             transition: all 0.2s ease;
+        }
+
+        .code-tab:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .code-tab:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
         }
 
         .code-tab.active {

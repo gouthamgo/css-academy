@@ -3,89 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Interactive Playground</title>
-    <link rel="stylesheet" href="/c.css">
+    <title>CSS Interactive Playground - Learn CSS by Doing</title>
+    <meta name="description" content="Interactive CSS learning platform with live code editing and instant previews. Master Flexbox, Grid, Animations, and more.">
+    <link rel="stylesheet" href="./c.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <header>
         <h1>CSS Interactive Playground</h1>
         <p class="subtitle">Learn by doing - Edit code and see results instantly</p>
     </header>
 
     <div class="container">
-        <div class="sidebar">
+        <nav class="sidebar" role="navigation" aria-label="CSS Concepts Navigation">
             <div class="sidebar-header">CSS Concepts</div>
-            
-            <!-- Layout Section -->
-            <div class="category-title">LAYOUT</div>
-            <ul class="concept-list">
-                <li class="concept-item active" data-concept="flexbox">
-                    <span class="concept-icon">📦</span> Flexbox
-                </li>
-                <li class="concept-item" data-concept="grid">
-                    <span class="concept-icon">🔲</span> Grid
-                </li>
-                <li class="concept-item" data-concept="position">
-                    <span class="concept-icon">📍</span> Position
-                </li>
-                <li class="concept-item" data-concept="box-model">
-                    <span class="concept-icon">📦</span> Box Model
-                </li>
-            </ul>
-            
-            <!-- Visual Effects Section -->
-            <div class="category-title">VISUAL EFFECTS</div>
-            <ul class="concept-list">
-                <li class="concept-item" data-concept="animation">
-                    <span class="concept-icon">🎬</span> Animation
-                </li>
-                <li class="concept-item" data-concept="transition">
-                    <span class="concept-icon">🔄</span> Transition
-                </li>
-                <li class="concept-item" data-concept="transform">
-                    <span class="concept-icon">↔️</span> Transform
-                </li>
-                <li class="concept-item" data-concept="filters">
-                    <span class="concept-icon">🖼️</span> Filters
-                </li>
-                <li class="concept-item" data-concept="gradients">
-                    <span class="concept-icon">🌈</span> Gradients
-                </li>
-                <li class="concept-item" data-concept="shadows">
-                    <span class="concept-icon">👤</span> Shadows
-                </li>
-            </ul>
-        </div>
 
-        <div class="main-content">
+            <!-- Layout Section -->
+            <div class="category-title" role="heading" aria-level="2">LAYOUT</div>
+            <ul class="concept-list" role="tablist">
+                <li class="concept-item active" data-concept="flexbox" role="tab" aria-selected="true" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">📦</span> Flexbox
+                </li>
+                <li class="concept-item" data-concept="grid" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">🔲</span> Grid
+                </li>
+                <li class="concept-item" data-concept="position" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">📍</span> Position
+                </li>
+                <li class="concept-item" data-concept="box-model" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">📦</span> Box Model
+                </li>
+            </ul>
+
+            <!-- Visual Effects Section -->
+            <div class="category-title" role="heading" aria-level="2">VISUAL EFFECTS</div>
+            <ul class="concept-list" role="tablist">
+                <li class="concept-item" data-concept="animation" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">🎬</span> Animation
+                </li>
+                <li class="concept-item" data-concept="transition" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">🔄</span> Transition
+                </li>
+                <li class="concept-item" data-concept="transform" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">↔️</span> Transform
+                </li>
+                <li class="concept-item" data-concept="filters" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">🖼️</span> Filters
+                </li>
+                <li class="concept-item" data-concept="gradients" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">🌈</span> Gradients
+                </li>
+                <li class="concept-item" data-concept="shadows" role="tab" aria-selected="false" tabindex="0">
+                    <span class="concept-icon" aria-hidden="true">👤</span> Shadows
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content" role="main" id="main-content">
             <div class="content-header">
-                <h2 class="concept-title">Flexbox</h2>
-                <p class="concept-description">Flexbox is a layout model that allows you to design flexible responsive layouts without using float or positioning.</p>
+                <h2 class="concept-title" id="concept-title">Flexbox</h2>
+                <p class="concept-description" id="concept-description">Flexbox is a layout model that allows you to design flexible responsive layouts without using float or positioning.</p>
             </div>
 
             <div class="content-body">
                 <div class="preview-container">
                     <h3 class="preview-title">
-                        <span>⚡</span> Live Preview
+                        <span aria-hidden="true">⚡</span> Live Preview
                     </h3>
-                    <div class="preview-box" id="preview">
+                    <div class="preview-box" id="preview" role="region" aria-live="polite" aria-label="Code preview area">
                         <!-- Preview content will be inserted here -->
                     </div>
                 </div>
 
                 <div class="code-container">
-                    <div class="code-tabs">
-                        <div class="code-tab active" data-tab="html">HTML</div>
-                        <div class="code-tab" data-tab="css">CSS</div>
+                    <div class="code-tabs" role="tablist" aria-label="Code editor tabs">
+                        <button class="code-tab active" data-tab="html" role="tab" aria-selected="true" aria-controls="html-editor">HTML</button>
+                        <button class="code-tab" data-tab="css" role="tab" aria-selected="false" aria-controls="css-editor">CSS</button>
                     </div>
-                    <div class="code-editor" id="html-editor" contenteditable="true">
+                    <div class="code-editor" id="html-editor" contenteditable="true" role="textbox" aria-label="HTML code editor" aria-multiline="true" spellcheck="false">
 &lt;div class="flex-preview"&gt;
   &lt;div class="flex-item"&gt;Item 1&lt;/div&gt;
   &lt;div class="flex-item"&gt;Item 2&lt;/div&gt;
   &lt;div class="flex-item"&gt;Item 3&lt;/div&gt;
 &lt;/div&gt;
                     </div>
-                    <div class="code-editor" id="css-editor" contenteditable="true" style="display: none;">
+                    <div class="code-editor" id="css-editor" contenteditable="true" role="textbox" aria-label="CSS code editor" aria-multiline="true" spellcheck="false" style="display: none;">
 .flex-preview {
   display: flex;
   gap: 10px;
@@ -105,373 +107,16 @@
 }
                     </div>
                     <div class="code-actions">
-                        <button class="btn btn-primary" id="run-btn">Run Code</button>
-                        <button class="btn btn-secondary" id="copy-btn">Copy Code</button>
+                        <button class="btn btn-primary" id="run-btn" aria-label="Run code and update preview">Run Code</button>
+                        <button class="btn btn-secondary" id="copy-btn" aria-label="Copy current code to clipboard">Copy Code</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <div class="notification" id="notification">Code copied to clipboard!</div>
 
-    <script>
-        // Concept data
-        const conceptData = {
-            flexbox: {
-                title: "Flexbox",
-                description: "Flexbox is a layout model that allows you to design flexible responsive layouts without using float or positioning.",
-                html: `<div class="flex-preview">
-  <div class="flex-item">Item 1</div>
-  <div class="flex-item">Item 2</div>
-  <div class="flex-item">Item 3</div>
-</div>`,
-                css: `.flex-preview {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-}
-
-.flex-item {
-  background-color: #4895ef;
-  color: white;
-  padding: 20px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}`
-            },
-            grid: {
-                title: "CSS Grid",
-                description: "CSS Grid is a two-dimensional layout system that handles both rows and columns, perfect for complex web layouts.",
-                html: `<div class="grid-preview">
-  <div class="grid-item">1</div>
-  <div class="grid-item">2</div>
-  <div class="grid-item">3</div>
-  <div class="grid-item">4</div>
-  <div class="grid-item">5</div>
-  <div class="grid-item">6</div>
-</div>`,
-                css: `.grid-preview {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-}
-
-.grid-item {
-  background-color: #f72585;
-  color: white;
-  padding: 20px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}`
-            },
-            position: {
-                title: "Position",
-                description: "Positioning allows you to take elements out of normal document flow and place them precisely.",
-                html: `<div class="position-preview">
-  <div class="position-box" style="top: 20px; left: 20px;">Top Left</div>
-  <div class="position-box" style="bottom: 20px; right: 20px;">Bottom Right</div>
-</div>`,
-                css: `.position-preview {
-  position: relative;
-  height: 150px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-}
-
-.position-box {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background-color: #4361ee;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-}`
-            },
-            "box-model": {
-                title: "Box Model",
-                description: "Every element is a rectangular box with content, padding, border, and margin.",
-                html: `<div class="box-model-preview">Box Model</div>`,
-                css: `.box-model-preview {
-  width: 200px;
-  height: 200px;
-  padding: 20px;
-  border: 10px solid #4895ef;
-  margin: 20px;
-  background-color: #4361ee;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}`
-            },
-            animation: {
-                title: "Animation",
-                description: "CSS animations let you create gradual transitions between style configurations.",
-                html: `<div class="animation-preview"></div>`,
-                css: `.animation-preview {
-  width: 100px;
-  height: 100px;
-  background-color: #4cc9f0;
-  border-radius: 50%;
-  margin: 20px auto;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}`
-            },
-            transition: {
-                title: "Transition",
-                description: "CSS transitions allow you to change property values smoothly over a specified duration.",
-                html: `<div class="transition-preview"></div>`,
-                css: `.transition-preview {
-  width: 100px;
-  height: 100px;
-  background-color: #4895ef;
-  border-radius: 4px;
-  margin: 20px auto;
-  transition: all 0.3s ease;
-}
-
-.transition-preview:hover {
-  transform: scale(1.2);
-  background-color: #4361ee;
-}`
-            },
-            transform: {
-                title: "Transform",
-                description: "CSS transforms let you rotate, scale, skew, or translate elements.",
-                html: `<div class="transform-preview">
-  <div class="transform-box">Hover Me</div>
-</div>`,
-                css: `.transform-preview {
-  padding: 20px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  text-align: center;
-}
-
-.transform-box {
-  width: 100px;
-  height: 100px;
-  background-color: #4361ee;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  transition: transform 0.5s ease;
-}
-
-.transform-box:hover {
-  transform: rotate(45deg) scale(1.2);
-}`
-            },
-            filters: {
-                title: "Filters",
-                description: "CSS filters provide graphical effects like blurring, brightening, or color shifting for an element.",
-                html: `<div class="filters-preview">
-  <div class="filter-box" style="filter: blur(2px);">blur</div>
-  <div class="filter-box" style="filter: brightness(150%);">brightness</div>
-  <div class="filter-box" style="filter: contrast(200%);">contrast</div>
-  <div class="filter-box" style="filter: grayscale(100%);">grayscale</div>
-  <div class="filter-box" style="filter: hue-rotate(90deg);">hue</div>
-  <div class="filter-box" style="filter: sepia(100%);">sepia</div>
-</div>`,
-                css: `.filters-preview {
-  padding: 20px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.filter-box {
-  width: 80px;
-  height: 80px;
-  background-color: #4361ee;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-}`
-            },
-            gradients: {
-                title: "Gradients",
-                description: "CSS gradients let you display smooth transitions between two or more specified colors.",
-                html: `<div class="gradient-preview">
-  <div class="gradient-box" style="background: linear-gradient(to right, #4361ee, #4cc9f0);">Linear</div>
-  <div class="gradient-box" style="background: radial-gradient(circle, #f72585, #3a0ca3);">Radial</div>
-  <div class="gradient-box" style="background: conic-gradient(from 45deg, #4361ee, #f72585, #4cc9f0, #4361ee);">Conic</div>
-</div>`,
-                css: `.gradient-preview {
-  height: 200px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-}
-
-.gradient-box {
-  flex: 1;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-}`
-            },
-            shadows: {
-                title: "Shadows",
-                description: "CSS shadows add depth to elements with box-shadow for containers and text-shadow for text.",
-                html: `<div class="shadow-preview">
-  <div class="shadow-box" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Subtle</div>
-  <div class="shadow-box" style="box-shadow: 0 8px 16px rgba(0,0,0,0.3);">Strong</div>
-  <div class="shadow-box" style="box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);">Colored</div>
-  <div class="shadow-box" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 1.5rem; font-weight: bold;">Text</div>
-</div>`,
-                css: `.shadow-preview {
-  padding: 20px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.shadow-box {
-  width: 100px;
-  height: 100px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  color: var(--dark);
-  font-size: 0.8rem;
-}`
-            }
-        };
-
-        // DOM Elements
-        const conceptItems = document.querySelectorAll('.concept-item');
-        const conceptTitle = document.querySelector('.concept-title');
-        const conceptDescription = document.querySelector('.concept-description');
-        const previewBox = document.getElementById('preview');
-        const htmlEditor = document.getElementById('html-editor');
-        const cssEditor = document.getElementById('css-editor');
-        const codeTabs = document.querySelectorAll('.code-tab');
-        const runBtn = document.getElementById('run-btn');
-        const copyBtn = document.getElementById('copy-btn');
-        const notification = document.getElementById('notification');
-
-        // Function to switch between concepts
-        function switchConcept(conceptName) {
-            // Update the active class
-            conceptItems.forEach(item => {
-                if (item.getAttribute('data-concept') === conceptName) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            
-            // Get concept data
-            const data = conceptData[conceptName];
-            
-            // Update the UI
-            conceptTitle.textContent = data.title;
-            conceptDescription.textContent = data.description;
-            htmlEditor.textContent = data.html;
-            cssEditor.textContent = data.css;
-            
-            // Run the code
-            runCode();
-        }
-
-        // Add click event to concept items
-        conceptItems.forEach(item => {
-            item.onclick = function() {
-                const concept = this.getAttribute('data-concept');
-                switchConcept(concept);
-            };
-        });
-
-        // Switch between HTML/CSS tabs
-        codeTabs.forEach(tab => {
-            tab.onclick = function() {
-                codeTabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                const tabType = this.getAttribute('data-tab');
-                if (tabType === 'html') {
-                    htmlEditor.style.display = 'block';
-                    cssEditor.style.display = 'none';
-                } else {
-                    htmlEditor.style.display = 'none';
-                    cssEditor.style.display = 'block';
-                }
-            };
-        });
-
-        // Run code button
-        runBtn.onclick = runCode;
-
-        // Copy code button
-        copyBtn.onclick = function() {
-            const activeEditor = htmlEditor.style.display === 'none' ? cssEditor : htmlEditor;
-            const text = activeEditor.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showNotification();
-            });
-        };
-
-        // Function to run the code
-        function runCode() {
-            try {
-                const html = htmlEditor.textContent || htmlEditor.innerText;
-                const css = `<style>${cssEditor.textContent || cssEditor.innerText}</style>`;
-                previewBox.innerHTML = css + html;
-            } catch (e) {
-                console.error("Error running code:", e);
-                previewBox.innerHTML = `<div style="color: red; padding: 20px;">Error: ${e.message}</div>`;
-            }
-        }
-
-        // Function to show notification
-        function showNotification() {
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
-        }
-
-        // Initialize
-        runCode();
-    </script>
+    <script src="./app.js"></script>
 </body>
 </html>
