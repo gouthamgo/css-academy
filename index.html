@@ -3,48 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Academy - Learn CSS Interactively</title>
+    <title>CSS Academy 2025 - Master Modern CSS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>🎨 CSS Academy</h1>
-        <p>Learn CSS by building and testing</p>
-        <button id="themeBtn" class="theme-btn">🌙</button>
+        <div class="header-content">
+            <div class="header-left">
+                <h1>🎨 CSS Academy</h1>
+                <p>Master Modern CSS with Interactive Lessons</p>
+            </div>
+            <div class="header-right">
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value" id="progress">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">25+</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                </div>
+                <button id="themeBtn" class="theme-btn" aria-label="Toggle theme">🌙</button>
+            </div>
+        </div>
     </header>
 
     <div class="container">
         <aside class="sidebar">
-            <h2>Lessons</h2>
+            <div class="sidebar-header">
+                <h2>Curriculum</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="beginner">Beginner</button>
+                    <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+                    <button class="filter-btn" data-filter="advanced">Advanced</button>
+                </div>
+            </div>
             <div class="lesson-list" id="lessonList"></div>
         </aside>
 
         <main class="workspace">
             <div class="lesson-info">
-                <h2 id="lessonTitle">Welcome to CSS Academy!</h2>
-                <p id="lessonDesc">Select a lesson to start learning CSS</p>
+                <div class="lesson-header">
+                    <div>
+                        <span class="lesson-badge" id="lessonBadge">Beginner</span>
+                        <h2 id="lessonTitle">Welcome to CSS Academy 2025!</h2>
+                        <p id="lessonDesc">Select a lesson from the sidebar to start your CSS journey</p>
+                    </div>
+                </div>
             </div>
 
             <div class="editor-area">
                 <div class="editor-panel">
-                    <div class="tabs">
-                        <button class="tab active" data-lang="html">HTML</button>
-                        <button class="tab" data-lang="css">CSS</button>
+                    <div class="editor-header">
+                        <div class="tabs">
+                            <button class="tab active" data-lang="html">
+                                <span class="tab-icon">📄</span> HTML
+                            </button>
+                            <button class="tab" data-lang="css">
+                                <span class="tab-icon">🎨</span> CSS
+                            </button>
+                        </div>
+                        <div class="live-indicator">
+                            <span class="live-dot"></span>
+                            <span class="live-text">Auto-Run Active</span>
+                        </div>
                     </div>
-                    <textarea id="htmlCode" class="code-editor active" spellcheck="false"></textarea>
-                    <textarea id="cssCode" class="code-editor" spellcheck="false"></textarea>
+                    <textarea id="htmlCode" class="code-editor active" spellcheck="false" placeholder="Write your HTML here..."></textarea>
+                    <textarea id="cssCode" class="code-editor" spellcheck="false" placeholder="Write your CSS here..."></textarea>
                     <div class="editor-actions">
-                        <button id="runBtn" class="btn-primary">▶ Run Code</button>
-                        <button id="resetBtn" class="btn-secondary">🔄 Reset</button>
+                        <button id="runBtn" class="btn-primary">
+                            <span>▶</span> Run Code
+                        </button>
+                        <button id="resetBtn" class="btn-secondary">
+                            <span>🔄</span> Reset
+                        </button>
+                        <button id="copyBtn" class="btn-secondary">
+                            <span>📋</span> Copy
+                        </button>
                     </div>
                 </div>
 
                 <div class="preview-panel">
-                    <h3>Live Preview</h3>
-                    <iframe id="preview" sandbox="allow-scripts"></iframe>
+                    <div class="preview-header">
+                        <h3>
+                            <span class="preview-icon">👁️</span>
+                            Live Preview
+                        </h3>
+                        <div class="device-toggle">
+                            <button class="device-btn active" data-device="desktop" title="Desktop">💻</button>
+                            <button class="device-btn" data-device="tablet" title="Tablet">📱</button>
+                            <button class="device-btn" data-device="mobile" title="Mobile">📱</button>
+                        </div>
+                    </div>
+                    <div class="preview-wrapper" id="previewWrapper">
+                        <iframe id="preview" sandbox="allow-scripts"></iframe>
+                    </div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <div class="toast" id="toast">
+        <span class="toast-icon">✓</span>
+        <span class="toast-text" id="toastText">Code copied!</span>
     </div>
 
     <script src="app.js"></script>
