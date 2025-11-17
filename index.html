@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Academy - Learn CSS Interactively</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🎨 CSS Academy</h1>
+        <p>Learn CSS by building and testing</p>
+        <button id="themeBtn" class="theme-btn">🌙</button>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Lessons</h2>
+            <div class="lesson-list" id="lessonList"></div>
+        </aside>
+
+        <main class="workspace">
+            <div class="lesson-info">
+                <h2 id="lessonTitle">Welcome to CSS Academy!</h2>
+                <p id="lessonDesc">Select a lesson to start learning CSS</p>
+            </div>
+
+            <div class="editor-area">
+                <div class="editor-panel">
+                    <div class="tabs">
+                        <button class="tab active" data-lang="html">HTML</button>
+                        <button class="tab" data-lang="css">CSS</button>
+                    </div>
+                    <textarea id="htmlCode" class="code-editor active" spellcheck="false"></textarea>
+                    <textarea id="cssCode" class="code-editor" spellcheck="false"></textarea>
+                    <div class="editor-actions">
+                        <button id="runBtn" class="btn-primary">▶ Run Code</button>
+                        <button id="resetBtn" class="btn-secondary">🔄 Reset</button>
+                    </div>
+                </div>
+
+                <div class="preview-panel">
+                    <h3>Live Preview</h3>
+                    <iframe id="preview" sandbox="allow-scripts"></iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

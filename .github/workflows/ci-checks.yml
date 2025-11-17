@@ -1,0 +1,157 @@
+name: Continuous Integration Checks
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: HTML Validation
+        run: |
+          echo "🔍 Validating HTML files..."
+          HTML_FILES=$(find . -name "*.html" -not -path "./node_modules/*")
+          for file in $HTML_FILES; do
+            echo "Checking $file..."
+            # Check for basic HTML structure
+            if grep -q "<!DOCTYPE html>" "$file" && \
+               grep -q "<html" "$file" && \
+               grep -q "</html>" "$file" && \
+               grep -q "<head>" "$file" && \
+               grep -q "</head>" "$file" && \
+               grep -q "<body>" "$file" && \
+               grep -q "</body>" "$file"; then
+              echo "✓ $file has valid HTML structure"
+            else
+              echo "✗ $file may have HTML structure issues"
+              exit 1
+            fi
+          done
+          echo "✅ All HTML files validated"
+
+      - name: JavaScript Syntax Check
+        run: |
+          echo "🔍 Checking JavaScript syntax..."
+          if [ -f "app.js" ]; then
+            node -c app.js
+            echo "✓ app.js syntax is valid"
+          fi
+          echo "✅ JavaScript validation complete"
+
+      - name: CSS Basic Check
+        run: |
+          echo "🔍 Checking CSS files..."
+          CSS_FILES=$(find . -name "*.css" -not -path "./node_modules/*")
+          for file in $CSS_FILES; do
+            echo "Checking $file..."
+            # Basic CSS validation - check for balanced braces
+            OPEN=$(grep -o "{" "$file" | wc -l)
+            CLOSE=$(grep -o "}" "$file" | wc -l)
+            if [ "$OPEN" -eq "$CLOSE" ]; then
+              echo "✓ $file has balanced braces"
+            else
+              echo "✗ $file has unbalanced braces ($OPEN open, $CLOSE close)"
+              exit 1
+            fi
+          done
+          echo "✅ CSS validation complete"
+
+      - name: File Structure Check
+        run: |
+          echo "🔍 Checking project structure..."
+          REQUIRED_FILES=(
+            "css.html"
+            "c.css"
+            "app.js"
+            "README.md"
+            ".github/workflows/static.yml"
+            ".github/workflows/auto-merge.yml"
+          )
+
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✓ $file exists"
+            else
+              echo "✗ Missing required file: $file"
+              exit 1
+            fi
+          done
+          echo "✅ Project structure validated"
+
+      - name: Check for Security Issues
+        run: |
+          echo "🔍 Checking for common security issues..."
+
+          # Check for inline event handlers (potential XSS)
+          if grep -r "onclick\|onerror\|onload" --include="*.html" .; then
+            echo "⚠️ Warning: Found inline event handlers. Consider using addEventListener instead."
+          fi
+
+          # Check for eval usage
+          if grep -r "eval(" --include="*.js" .; then
+            echo "❌ Error: Found eval() usage which can be a security risk"
+            exit 1
+          fi
+
+          echo "✅ Security check complete"
+
+      - name: Code Size Report
+        run: |
+          echo "📊 Code Statistics:"
+          echo "HTML: $(find . -name "*.html" -not -path "./node_modules/*" -exec cat {} \; | wc -l) lines"
+          echo "CSS: $(find . -name "*.css" -not -path "./node_modules/*" -exec cat {} \; | wc -l) lines"
+          echo "JavaScript: $(find . -name "*.js" -not -path "./node_modules/*" -exec cat {} \; | wc -l) lines"
+          echo "Total project size: $(du -sh . | cut -f1)"
+
+  link-checker:
+    name: Check Links and Resources
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check resource paths
+        run: |
+          echo "🔍 Checking resource paths..."
+
+          # Check CSS links
+          if grep -q 'href="./c.css"' css.html; then
+            echo "✓ CSS link is correctly formatted"
+          else
+            echo "✗ CSS link may be incorrect"
+            exit 1
+          fi
+
+          # Check JS script
+          if grep -q 'src="./app.js"' css.html; then
+            echo "✓ JavaScript link is correctly formatted"
+          else
+            echo "✗ JavaScript link may be incorrect"
+            exit 1
+          fi
+
+          echo "✅ Resource paths validated"
+
+  summary:
+    name: Build Summary
+    needs: [code-quality, link-checker]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Generate Summary
+        run: |
+          if [ "${{ needs.code-quality.result }}" == "success" ] && [ "${{ needs.link-checker.result }}" == "success" ]; then
+            echo "::notice::✅ All CI checks passed! Code is ready for deployment."
+          else
+            echo "::error::❌ Some CI checks failed. Please review the errors above."
+            exit 1
+          fi
