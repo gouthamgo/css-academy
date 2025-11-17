@@ -3,265 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Academy - Learn CSS by Building</title>
-    <meta name="description" content="Learn CSS interactively with hands-on tutorials, challenges, and a free playground. Perfect for beginners!">
-    <link rel="stylesheet" href="./style.css">
+    <title>CSS Academy - Learn CSS Interactively</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-left">
-            <h1 class="logo">🎨 CSS Academy</h1>
-            <p class="tagline">Learn by Building</p>
-        </div>
-        <div class="header-right">
-            <div class="progress-indicator">
-                <span class="progress-label">Progress:</span>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-                <span class="progress-text" id="progress-text">0%</span>
-            </div>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-                <span id="theme-icon">🌙</span>
-            </button>
-        </div>
+    <header>
+        <h1>🎨 CSS Academy</h1>
+        <p>Learn CSS by building and testing</p>
+        <button id="themeBtn" class="theme-btn">🌙</button>
     </header>
 
-    <!-- Mode Selector -->
-    <div class="mode-selector">
-        <button class="mode-btn active" data-mode="tutorial">
-            <span class="mode-icon">📚</span>
-            <span class="mode-name">Tutorial</span>
-            <span class="mode-desc">Step-by-step lessons</span>
-        </button>
-        <button class="mode-btn" data-mode="playground">
-            <span class="mode-icon">🎮</span>
-            <span class="mode-name">Playground</span>
-            <span class="mode-desc">Build anything</span>
-        </button>
-        <button class="mode-btn" data-mode="challenge">
-            <span class="mode-icon">🏆</span>
-            <span class="mode-name">Challenges</span>
-            <span class="mode-desc">Test your skills</span>
-        </button>
-    </div>
-
-    <!-- Main Container -->
     <div class="container">
+        <aside class="sidebar">
+            <h2>Lessons</h2>
+            <div class="lesson-list" id="lessonList"></div>
+        </aside>
 
-        <!-- TUTORIAL MODE -->
-        <div class="mode-content active" id="tutorial-mode">
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <h3>CSS Lessons</h3>
-                </div>
-                <div class="lessons-list" id="lessons-list">
-                    <!-- Dynamically populated -->
-                </div>
-            </aside>
+        <main class="workspace">
+            <div class="lesson-info">
+                <h2 id="lessonTitle">Welcome to CSS Academy!</h2>
+                <p id="lessonDesc">Select a lesson to start learning CSS</p>
+            </div>
 
-            <main class="workspace">
-                <!-- Instruction Panel -->
-                <div class="instruction-panel" id="instruction-panel">
-                    <h2 class="lesson-title" id="lesson-title">Welcome to CSS Academy!</h2>
-                    <div class="lesson-content" id="lesson-content">
-                        <p>Select a lesson from the sidebar to start learning!</p>
+            <div class="editor-area">
+                <div class="editor-panel">
+                    <div class="tabs">
+                        <button class="tab active" data-lang="html">HTML</button>
+                        <button class="tab" data-lang="css">CSS</button>
                     </div>
-                    <div class="lesson-steps" id="lesson-steps">
-                        <!-- Steps will be populated here -->
-                    </div>
-                    <div class="lesson-actions">
-                        <button class="btn btn-secondary" id="prev-step" disabled>← Previous</button>
-                        <button class="btn btn-primary" id="next-step">Next Step →</button>
+                    <textarea id="htmlCode" class="code-editor active" spellcheck="false"></textarea>
+                    <textarea id="cssCode" class="code-editor" spellcheck="false"></textarea>
+                    <div class="editor-actions">
+                        <button id="runBtn" class="btn-primary">▶ Run Code</button>
+                        <button id="resetBtn" class="btn-secondary">🔄 Reset</button>
                     </div>
                 </div>
 
-                <!-- Code & Preview Area -->
-                <div class="work-area">
-                    <div class="editor-section">
-                        <div class="editor-header">
-                            <div class="editor-tabs">
-                                <button class="editor-tab active" data-lang="html">HTML</button>
-                                <button class="editor-tab" data-lang="css">CSS</button>
-                            </div>
-                            <div class="editor-actions">
-                                <button class="btn-icon" id="run-code" title="Run Code (Ctrl+Enter)">▶️ Run</button>
-                                <button class="btn-icon" id="reset-code" title="Reset Code">🔄 Reset</button>
-                            </div>
-                        </div>
-                        <div class="editor-container">
-                            <div class="editor active" id="html-editor" contenteditable="true" spellcheck="false"></div>
-                            <div class="editor" id="css-editor" contenteditable="true" spellcheck="false"></div>
-                        </div>
-                        <div class="hint-box" id="hint-box">
-                            <span class="hint-icon">💡</span>
-                            <span class="hint-text" id="hint-text">Hint: Try changing the values to see what happens!</span>
-                        </div>
-                    </div>
-
-                    <div class="preview-section">
-                        <div class="preview-header">
-                            <h3>Live Preview</h3>
-                            <button class="btn-icon" id="toggle-preview" title="Toggle Preview">👁️</button>
-                        </div>
-                        <div class="preview-frame" id="preview-frame">
-                            <!-- Live preview renders here -->
-                        </div>
-                        <div class="preview-tools">
-                            <div class="device-selector">
-                                <button class="device-btn active" data-device="desktop" title="Desktop View">💻</button>
-                                <button class="device-btn" data-device="tablet" title="Tablet View">📱</button>
-                                <button class="device-btn" data-device="mobile" title="Mobile View">📱</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <!-- PLAYGROUND MODE -->
-        <div class="mode-content" id="playground-mode">
-            <div class="playground-container">
-                <div class="playground-sidebar">
-                    <h3>🎨 Your Projects</h3>
-                    <button class="btn btn-primary btn-block" id="new-project">+ New Project</button>
-                    <div class="projects-list" id="projects-list">
-                        <!-- Saved projects -->
-                    </div>
-
-                    <div class="templates-section">
-                        <h4>📋 Templates</h4>
-                        <div class="template-list" id="template-list">
-                            <!-- Templates -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="playground-workspace">
-                    <div class="playground-header">
-                        <input type="text" class="project-name" id="project-name" placeholder="My Awesome Project" />
-                        <div class="playground-actions">
-                            <button class="btn btn-secondary" id="save-project">💾 Save</button>
-                            <button class="btn btn-secondary" id="export-project">📤 Export</button>
-                            <button class="btn btn-secondary" id="share-project">🔗 Share</button>
-                        </div>
-                    </div>
-
-                    <div class="playground-editor">
-                        <div class="editor-column">
-                            <div class="editor-header">HTML</div>
-                            <div class="editor" id="playground-html" contenteditable="true" spellcheck="false">
-&lt;div class="container"&gt;
-  &lt;h1&gt;Hello CSS!&lt;/h1&gt;
-  &lt;p&gt;Start building something amazing!&lt;/p&gt;
-&lt;/div&gt;
-                            </div>
-                        </div>
-                        <div class="editor-column">
-                            <div class="editor-header">CSS</div>
-                            <div class="editor" id="playground-css" contenteditable="true" spellcheck="false">
-.container {
-  padding: 20px;
-  text-align: center;
-}
-
-h1 {
-  color: #4361ee;
-  font-size: 2rem;
-}
-                            </div>
-                        </div>
-                        <div class="preview-column">
-                            <div class="editor-header">Preview</div>
-                            <div class="preview-frame" id="playground-preview"></div>
-                        </div>
-                    </div>
+                <div class="preview-panel">
+                    <h3>Live Preview</h3>
+                    <iframe id="preview" sandbox="allow-scripts"></iframe>
                 </div>
             </div>
-        </div>
-
-        <!-- CHALLENGE MODE -->
-        <div class="mode-content" id="challenge-mode">
-            <div class="challenge-container">
-                <aside class="challenges-sidebar">
-                    <h3>🏆 Challenges</h3>
-                    <div class="difficulty-filter">
-                        <button class="filter-btn active" data-difficulty="all">All</button>
-                        <button class="filter-btn" data-difficulty="easy">Easy</button>
-                        <button class="filter-btn" data-difficulty="medium">Medium</button>
-                        <button class="filter-btn" data-difficulty="hard">Hard</button>
-                    </div>
-                    <div class="challenges-list" id="challenges-list">
-                        <!-- Challenges populated here -->
-                    </div>
-                </aside>
-
-                <div class="challenge-workspace">
-                    <div class="challenge-brief" id="challenge-brief">
-                        <h2 id="challenge-title">Select a Challenge</h2>
-                        <div class="challenge-meta">
-                            <span class="difficulty-badge" id="challenge-difficulty"></span>
-                            <span class="points-badge" id="challenge-points"></span>
-                        </div>
-                        <div class="challenge-description" id="challenge-description"></div>
-                        <div class="challenge-requirements" id="challenge-requirements"></div>
-                        <button class="btn btn-primary" id="start-challenge">Start Challenge</button>
-                    </div>
-
-                    <div class="challenge-editor" id="challenge-editor" style="display: none;">
-                        <div class="challenge-task">
-                            <h3>Task</h3>
-                            <p id="challenge-task-text"></p>
-                        </div>
-
-                        <div class="editor-grid">
-                            <div class="editor-pane">
-                                <div class="editor-tabs">
-                                    <button class="editor-tab active" data-lang="html">HTML</button>
-                                    <button class="editor-tab" data-lang="css">CSS</button>
-                                </div>
-                                <div class="editor" id="challenge-html" contenteditable="true" spellcheck="false"></div>
-                                <div class="editor" id="challenge-css" contenteditable="true" spellcheck="false" style="display:none;"></div>
-                            </div>
-                            <div class="preview-pane">
-                                <div class="preview-header">
-                                    <span>Your Solution</span>
-                                    <button class="btn btn-primary" id="submit-challenge">✓ Submit</button>
-                                </div>
-                                <div class="preview-frame" id="challenge-preview"></div>
-                            </div>
-                        </div>
-
-                        <div class="challenge-validation" id="challenge-validation">
-                            <!-- Validation results -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        </main>
     </div>
 
-    <!-- Success Modal -->
-    <div class="modal" id="success-modal">
-        <div class="modal-content">
-            <div class="modal-icon">🎉</div>
-            <h2>Congratulations!</h2>
-            <p id="success-message">You've completed the lesson!</p>
-            <div class="modal-actions">
-                <button class="btn btn-primary" id="continue-learning">Continue Learning</button>
-                <button class="btn btn-secondary" id="close-modal">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div class="toast" id="toast">
-        <span class="toast-icon" id="toast-icon">✓</span>
-        <span class="toast-message" id="toast-message"></span>
-    </div>
-
-    <script src="./academy.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
