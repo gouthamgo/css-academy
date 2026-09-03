@@ -4,27 +4,9 @@
 
 import { highlightLines } from './highlight.js';
 import { mountScene } from './viz/engine.js';
+import { fmt, escapeHtml } from './format.js';
 
-/* ---- Tiny inline formatter -------------------------------------
-   Supports `code`, **strong**, *emphasis* and [text](url).
-   Everything is escaped first, so lesson text can contain <, > and &
-   without ceremony. */
-const escapeHtml = (s) =>
-  String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-export function fmt(text) {
-  return escapeHtml(text)
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1<em>$2</em>')
-    .replace(
-      /\[([^\]]+)\]\(([^)\s]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
-}
+export { fmt };
 
 const paras = (value) =>
   (Array.isArray(value) ? value : [value])

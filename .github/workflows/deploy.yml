@@ -46,18 +46,22 @@ jobs:
 
       - name: Every lesson the manifest references exists
         run: |
+          # The manifest builds its import paths from the lesson id, so the
+          # ids are what we check. A missing file would 404 at runtime and
+          # show "could not be loaded" instead of the lesson.
           status=0
-          refs=$(grep -o "import('\./[^']*')" assets/js/content/index.js \
-                 | sed "s|import('\./||; s|')||")
+          refs=$(grep -oE "^ *(cpp|rust)\('[a-z0-9-]+'" assets/js/content/index.js \
+                 | tr -d " " | sed "s|('|/|; s|'||")
+          count=0
           for rel in $refs; do
-            path="assets/js/content/$rel"
-            if [ -f "$path" ]; then
-              echo "ok $path"
-            else
+            path="assets/js/content/$rel.js"
+            count=$((count + 1))
+            if [ ! -f "$path" ]; then
               echo "::error::manifest points at a missing lesson: $path"
               status=1
             fi
           done
+          echo "checked $count lessons"
           exit $status
 
   deploy:

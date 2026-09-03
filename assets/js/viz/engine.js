@@ -29,6 +29,7 @@
    ============================================================ */
 
 import { renderShape, buildDefs, LAYER } from './primitives.js';
+import { fmt } from '../format.js';
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const AUTOPLAY_MS = 2600;
@@ -263,12 +264,12 @@ export function mountScene(container, scene) {
      commits to an answer before seeing the reveal. */
   function showPredict(i) {
     const p = steps[i].predict;
-    predictQ.textContent = p.ask;
+    predictQ.innerHTML = fmt(p.ask);
     predictFb.hidden = true;
     predictOpts.innerHTML = p.options
       .map(
         (o, oi) =>
-          `<button class="predict-opt" data-opt="${oi}">${o.label}</button>`
+          `<button class="predict-opt" data-opt="${oi}">${fmt(o.label)}</button>`
       )
       .join('');
     predictEl.hidden = false;
@@ -291,9 +292,9 @@ export function mountScene(container, scene) {
         b.classList.toggle('is-wrong', bi === Number(btn.dataset.opt) && !chosen.correct);
       });
 
-    predictFb.textContent = chosen.correct
-      ? `Right. ${p.because ?? ''}`
-      : `Not quite. ${p.because ?? ''}`;
+    predictFb.innerHTML = fmt(
+      `${chosen.correct ? 'Right.' : 'Not quite.'} ${p.because ?? ''}`
+    );
     predictFb.classList.toggle('is-right', Boolean(chosen.correct));
     predictFb.hidden = false;
 
@@ -325,7 +326,7 @@ export function mountScene(container, scene) {
     render(index, animate && !burst);
 
     const step = steps[index];
-    sayEl.textContent = step?.say ?? '';
+    sayEl.innerHTML = fmt(step?.say ?? '');
     counterEl.textContent = `${index + 1} / ${steps.length}`;
     titleNode.textContent = `${scene.title ?? 'Diagram'}. Step ${index + 1}: ${step?.say ?? ''}`;
 
