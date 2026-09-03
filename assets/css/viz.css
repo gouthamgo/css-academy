@@ -1,0 +1,386 @@
+/* ============================================================
+   ZEROCOST — Step-through diagram chrome
+   ============================================================ */
+
+.viz {
+  border: 1px solid var(--line-faint);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+.viz:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.viz__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--line-faint);
+  background: var(--bg-void);
+}
+.viz__titles {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  min-width: 0;
+  flex: 1;
+}
+.viz__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 650;
+  flex-shrink: 0;
+}
+.viz__title {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.viz__counter {
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+
+/* ---- Stage ---- */
+.viz__stage {
+  background: var(--bg-base);
+  padding: var(--s-4);
+  overflow-x: auto;
+}
+.viz__stage svg {
+  width: 100%;
+  height: auto;
+  min-width: 560px;
+  display: block;
+}
+
+/* Shape transitions. Only transform, opacity and fill move —
+   all three are cheap and none of them trigger layout. */
+.viz-shape {
+  transition: transform var(--dur-slow) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+.viz-shape.is-entering {
+  opacity: 0 !important;
+}
+.viz-shape.is-leaving {
+  pointer-events: none;
+}
+.viz-shape > * {
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.viz-shape rect,
+.viz-shape path,
+.viz-shape text,
+.viz-shape line {
+  transition: fill var(--dur-base) var(--ease-out),
+    stroke var(--dur-base) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viz-shape,
+  .viz-shape > *,
+  .viz-shape rect,
+  .viz-shape path,
+  .viz-shape text,
+  .viz-shape line {
+    transition: none !important;
+  }
+}
+
+/* ---- Narration ---- */
+.viz__say {
+  padding: var(--s-4);
+  margin: 0;
+  font-size: var(--t-base);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  border-top: 1px solid var(--line-faint);
+  background: var(--bg-raised);
+  min-height: 3.6em;
+}
+.viz__say code {
+  background: var(--bg-inset);
+  padding: 0.1em 0.35em;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-faint);
+  font-size: 0.9em;
+}
+
+/* ---- Controls ---- */
+.viz__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-top: 1px solid var(--line-faint);
+  background: var(--bg-void);
+}
+
+.viz__btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-md);
+  color: var(--ink-muted);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.viz__btn:hover:not(:disabled) {
+  background: var(--bg-inset);
+  color: var(--ink);
+}
+.viz__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.viz__btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.viz__btn--play {
+  color: var(--accent);
+}
+.viz__btn--play:hover:not(:disabled) {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.viz__btn--text {
+  width: auto;
+  padding-inline: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+}
+
+.viz__dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  padding-inline: var(--s-2);
+  flex-wrap: wrap;
+}
+.viz__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background var(--dur-fast), width var(--dur-base) var(--ease-out);
+}
+.viz__dot:hover {
+  background: var(--line-strong);
+}
+.viz__dot.is-past {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.viz__dot.is-active {
+  width: 18px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+
+/* ---- Legend (optional, rendered by the lesson) ---- */
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-top: 1px solid var(--line-faint);
+  background: var(--bg-raised);
+}
+.viz-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-muted);
+}
+.viz-legend__swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  border: 1.5px solid currentColor;
+}
+.viz-legend__item[data-tone="stack"] { color: var(--viz-stack); }
+.viz-legend__item[data-tone="heap"] { color: var(--viz-heap); }
+.viz-legend__item[data-tone="owned"] { color: var(--viz-owned); }
+.viz-legend__item[data-tone="borrowed"] { color: var(--viz-borrowed); }
+.viz-legend__item[data-tone="moved"] { color: var(--viz-moved); }
+.viz-legend__item[data-tone="freed"] { color: var(--viz-freed); }
+.viz-legend__item[data-tone="hit"] { color: var(--viz-hit); }
+.viz-legend__item[data-tone="miss"] { color: var(--viz-miss); }
+.viz-legend__item[data-tone="highlight"] { color: var(--viz-highlight); }
+
+@media (max-width: 700px) {
+  .viz__stage {
+    padding: var(--s-2);
+  }
+  .viz__say {
+    padding: var(--s-3);
+    font-size: var(--t-sm);
+  }
+}
+
+/* ---- Signalling: everything not in the step's focus set recedes ---- */
+.viz-shape.is-dim {
+  opacity: 0.32 !important;
+  filter: saturate(0.5);
+}
+
+/* ---- Prediction prompt ----
+   Passive viewing is the level at which visualisation stops helping.
+   Committing to an answer before the reveal is the fix. */
+.viz__predict {
+  padding: var(--s-4);
+  border-top: 1px solid var(--line-faint);
+  background: var(--accent-dim);
+}
+.viz__predict-q {
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--s-3);
+}
+.viz__predict-opts {
+  display: grid;
+  gap: var(--s-2);
+}
+.predict-opt {
+  text-align: left;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--ink);
+  font-size: var(--t-sm);
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.predict-opt:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--bg-inset);
+}
+.predict-opt:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.predict-opt.is-right {
+  border-color: var(--viz-owned);
+  background: var(--viz-owned-fill);
+  opacity: 1;
+}
+.predict-opt.is-right::after {
+  content: " ✓";
+  color: var(--viz-owned);
+  font-weight: 700;
+}
+.predict-opt.is-wrong {
+  border-color: var(--viz-freed);
+  background: var(--viz-freed-fill);
+  opacity: 1;
+}
+.viz__predict-fb {
+  margin-top: var(--s-3);
+  padding: var(--s-3);
+  border-radius: var(--r-md);
+  font-size: var(--t-sm);
+  background: var(--viz-freed-fill);
+  border-left: 2px solid var(--viz-freed);
+  color: var(--ink);
+}
+.viz__predict-fb.is-right {
+  background: var(--viz-owned-fill);
+  border-left-color: var(--viz-owned);
+}
+
+/* ---- Next is the primary control: stepping is the pedagogy ---- */
+.viz__btn--next {
+  width: auto;
+  gap: 5px;
+  padding-inline: var(--s-3);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  margin-left: auto;
+}
+.viz__btn--next:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 85%, white);
+  color: var(--accent-ink);
+}
+.viz__btn--next svg {
+  width: 14px;
+  height: 14px;
+}
+.viz__btn--play {
+  order: 5;
+}
+.viz__dots {
+  flex: 0 1 auto;
+}
+
+/* ---- Text alternative ---- */
+.viz__table {
+  border-top: 1px solid var(--line-faint);
+  padding: var(--s-4);
+  background: var(--bg-sunken);
+  overflow-x: auto;
+}
+.viz__table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+}
+.viz__table caption {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: var(--s-2);
+}
+.viz__table th {
+  text-align: left;
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  font-weight: 600;
+  padding: var(--s-2);
+  border-bottom: 1px solid var(--line);
+}
+.viz__table td {
+  padding: var(--s-2);
+  border-bottom: 1px solid var(--line-faint);
+  color: var(--ink-muted);
+  vertical-align: top;
+}
+
+.viz__hint {
+  margin-top: var(--s-2);
+  color: var(--ink-faint);
+}
+
+@media (max-width: 700px) {
+  .viz__controls {
+    flex-wrap: wrap;
+  }
+  .viz__btn--next {
+    margin-left: 0;
+  }
+}

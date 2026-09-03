@@ -1,0 +1,77 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Required files are present
+        run: |
+          for f in index.html assets/css/tokens.css assets/js/app.js; do
+            test -f "$f" || { echo "::error::missing $f"; exit 1; }
+            echo "found $f"
+          done
+
+      - name: JavaScript parses
+        run: |
+          # A syntax error in any module fails silently in the browser as a
+          # blank page, so it is worth catching here. These are ES modules,
+          # which is why the source is piped in with --input-type=module.
+          status=0
+          for f in $(find assets/js -name '*.js' | sort); do
+            if node --input-type=module --check < "$f"; then
+              echo "ok $f"
+            else
+              echo "::error file=$f::syntax error"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Every lesson the manifest references exists
+        run: |
+          status=0
+          refs=$(grep -o "import('\./[^']*')" assets/js/content/index.js \
+                 | sed "s|import('\./||; s|')||")
+          for rel in $refs; do
+            path="assets/js/content/$rel"
+            if [ -f "$path" ]; then
+              echo "ok $path"
+            else
+              echo "::error::manifest points at a missing lesson: $path"
+              status=1
+            fi
+          done
+          exit $status
+
+  deploy:
+    name: Deploy
+    needs: check
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - id: deployment
+        uses: actions/deploy-pages@v4

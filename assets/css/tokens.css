@@ -1,0 +1,212 @@
+/* ============================================================
+   ZEROCOST — Design tokens
+   Dark-first. Light mode is a token swap, nothing else.
+   ============================================================ */
+
+:root {
+  /* ---- Neutrals (dark theme is the default) ---- */
+  --bg-void: #0a0b0d;
+  --bg-base: #101216;
+  --bg-raised: #16191f;
+  --bg-sunken: #0c0e11;
+  --bg-inset: #1c2029;
+
+  --line-faint: #1e222b;
+  --line: #2a2f3a;
+  --line-strong: #3a4150;
+
+  --ink: #e8eaf0;
+  --ink-muted: #9aa3b2;
+  --ink-faint: #666e7d;
+
+  /* ---- Track accents ---- */
+  --cpp: #6ea8f5;
+  --cpp-dim: #1e2c44;
+  --cpp-glow: rgba(110, 168, 245, 0.14);
+
+  --rust: #e8874a;
+  --rust-dim: #3a2415;
+  --rust-glow: rgba(232, 135, 74, 0.14);
+
+  --accent: #e8874a;
+  --accent-dim: #3a2415;
+  --accent-ink: #0a0b0d;
+
+  /* ---- Semantic colors for visualizations ----
+     Chosen for deuteranopia/protanopia separability:
+     blue / orange / purple / teal never rely on red-green contrast. */
+  --viz-stack: #6ea8f5;      /* stack memory */
+  --viz-heap: #b98cf0;       /* heap memory */
+  --viz-owned: #4fc3a1;      /* live / owned */
+  --viz-borrowed: #e8c34a;   /* borrowed / shared */
+  --viz-moved: #6b7280;      /* moved-from / dead */
+  --viz-freed: #ef6b6b;      /* freed / invalid */
+  --viz-hit: #4fc3a1;        /* cache hit */
+  --viz-miss: #ef6b6b;       /* cache miss */
+  --viz-highlight: #e8874a;  /* attention */
+
+  --viz-stack-fill: rgba(110, 168, 245, 0.16);
+  --viz-heap-fill: rgba(185, 140, 240, 0.16);
+  --viz-owned-fill: rgba(79, 195, 161, 0.16);
+  --viz-borrowed-fill: rgba(232, 195, 74, 0.16);
+  --viz-moved-fill: rgba(107, 114, 128, 0.14);
+  --viz-freed-fill: rgba(239, 107, 107, 0.14);
+  --viz-highlight-fill: rgba(232, 135, 74, 0.16);
+
+  /* ---- Syntax highlighting ---- */
+  --syn-keyword: #e8874a;
+  --syn-type: #6ea8f5;
+  --syn-string: #4fc3a1;
+  --syn-number: #b98cf0;
+  --syn-comment: #5f6773;
+  --syn-fn: #e8c34a;
+  --syn-punct: #9aa3b2;
+  --syn-macro: #ef8fb0;
+
+  /* ---- Typography ---- */
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code",
+    "Cascadia Code", Menlo, Consolas, monospace;
+
+  /* Fluid type scale — 1.25 ratio, clamped */
+  --t-xs: 0.75rem;
+  --t-sm: 0.8125rem;
+  --t-base: 0.9375rem;
+  --t-md: 1.0625rem;
+  --t-lg: clamp(1.125rem, 0.4vw + 1rem, 1.3125rem);
+  --t-xl: clamp(1.375rem, 1vw + 1.1rem, 1.75rem);
+  --t-2xl: clamp(1.75rem, 2vw + 1.2rem, 2.5rem);
+  --t-3xl: clamp(2.25rem, 3.5vw + 1.2rem, 3.5rem);
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-base: 1.65;
+  --lh-loose: 1.8;
+
+  --track-tight: -0.02em;
+  --track-wide: 0.08em;
+
+  /* ---- Space (4px base) ---- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  /* ---- Radius ---- */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 999px;
+
+  /* ---- Elevation ---- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+
+  /* ---- Motion ----
+     Durations are deliberately short. Animation exists to show a
+     transformation, not to entertain. */
+  --dur-fast: 120ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Layout ---- */
+  --measure: 68ch;
+  --sidebar-w: 288px;
+  --header-h: 56px;
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   Light theme
+   ============================================================ */
+:root[data-theme="light"] {
+  --bg-void: #ffffff;
+  --bg-base: #fbfbfa;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f4f4f2;
+  --bg-inset: #eeeeec;
+
+  --line-faint: #e8e8e5;
+  --line: #dcdcd8;
+  --line-strong: #c2c2bc;
+
+  --ink: #14161a;
+  --ink-muted: #5a616e;
+  --ink-faint: #8a919e;
+
+  --cpp: #2563c9;
+  --cpp-dim: #dce7fa;
+  --cpp-glow: rgba(37, 99, 201, 0.1);
+
+  --rust: #bc5a1c;
+  --rust-dim: #fae5d6;
+  --rust-glow: rgba(188, 90, 28, 0.1);
+
+  --accent: #bc5a1c;
+  --accent-dim: #fae5d6;
+  --accent-ink: #ffffff;
+
+  --viz-stack: #2563c9;
+  --viz-heap: #7c3fc4;
+  --viz-owned: #0f8a6a;
+  --viz-borrowed: #a67c00;
+  --viz-moved: #8a919e;
+  --viz-freed: #c62d2d;
+  --viz-hit: #0f8a6a;
+  --viz-miss: #c62d2d;
+  --viz-highlight: #bc5a1c;
+
+  --viz-stack-fill: rgba(37, 99, 201, 0.1);
+  --viz-heap-fill: rgba(124, 63, 196, 0.1);
+  --viz-owned-fill: rgba(15, 138, 106, 0.1);
+  --viz-borrowed-fill: rgba(166, 124, 0, 0.12);
+  --viz-moved-fill: rgba(138, 145, 158, 0.12);
+  --viz-freed-fill: rgba(198, 45, 45, 0.1);
+  --viz-highlight-fill: rgba(188, 90, 28, 0.1);
+
+  --syn-keyword: #bc5a1c;
+  --syn-type: #2563c9;
+  --syn-string: #0f8a6a;
+  --syn-number: #7c3fc4;
+  --syn-comment: #8a919e;
+  --syn-fn: #8a6d00;
+  --syn-punct: #5a616e;
+  --syn-macro: #b0316b;
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.06);
+  --shadow-md: 0 4px 16px rgba(20, 22, 26, 0.08);
+  --shadow-lg: 0 16px 48px rgba(20, 22, 26, 0.12);
+
+  color-scheme: light;
+}
+
+/* Track-scoped accent: set data-track on any container. */
+[data-track="cpp"] {
+  --accent: var(--cpp);
+  --accent-dim: var(--cpp-dim);
+  --accent-glow: var(--cpp-glow);
+}
+[data-track="rust"] {
+  --accent: var(--rust);
+  --accent-dim: var(--rust-dim);
+  --accent-glow: var(--rust-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur-slow: 1ms;
+  }
+}

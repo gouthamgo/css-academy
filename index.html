@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zerocost — Learn C++ and Rust for trading & ML infrastructure jobs</title>
+<meta name="description" content="A from-scratch, visual curriculum in C++ and Rust, aimed squarely at getting hired at quantitative trading firms and ML infrastructure teams. One concept at a time, with a diagram you can step through.">
+<meta name="color-scheme" content="dark light">
+
+<meta property="og:title" content="Zerocost">
+<meta property="og:description" content="Learn C++ and Rust from zero, visually, for trading and ML infrastructure jobs.">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230a0b0d'/><text x='16' y='23' font-size='19' font-family='monospace' font-weight='700' fill='%23e8874a' text-anchor='middle'>0</text></svg>">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/viz.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="app">
+
+  <header class="topbar">
+    <button class="iconbtn menubtn" id="menuBtn" aria-label="Open curriculum" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <a class="brand" href="#/" aria-label="Zerocost home">
+      <span class="brand__mark">0</span><span>zerocost</span>
+      <span class="brand__tag">systems for the job</span>
+    </a>
+
+    <div class="topbar__spacer"></div>
+
+    <div class="progpill" id="progPill" title="Lessons completed in this track">
+      <span class="progpill__bar"><span class="progpill__fill" id="progFill" style="width:0%"></span></span>
+      <span id="progText">0 / 0</span>
+    </div>
+
+    <div class="trackswitch" role="group" aria-label="Choose a track">
+      <button class="trackswitch__btn" data-track-id="cpp" aria-pressed="false">C++</button>
+      <button class="trackswitch__btn" data-track-id="rust" aria-pressed="false">Rust</button>
+    </div>
+
+    <button class="iconbtn" id="themeBtn" aria-label="Toggle light and dark theme">
+      <svg viewBox="0 0 24 24" id="themeIcon"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </header>
+
+  <div class="shell">
+    <div class="scrim" id="scrim" hidden></div>
+
+    <nav class="sidebar" id="sidebar" aria-label="Curriculum">
+      <div class="sidebar__search">
+        <input class="searchbox" id="searchBox" type="search" placeholder="Search lessons…" aria-label="Search lessons">
+      </div>
+      <div id="navTree"></div>
+    </nav>
+
+    <main class="stage" id="main" tabindex="-1">
+      <div id="view"></div>
+    </main>
+  </div>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText"></span></div>
+
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
