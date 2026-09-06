@@ -6,7 +6,7 @@ A from-scratch curriculum in systems programming, aimed squarely at getting hire
 at quantitative trading firms and ML infrastructure teams. One concept at a time,
 each with a diagram you step through yourself.
 
-Live site: https://gouthamgo.github.io/css-academy/
+Live site: https://gouthamgo.github.io/cp/
 
 ---
 
